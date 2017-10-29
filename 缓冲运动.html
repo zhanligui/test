@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            margin:0;
+            padding:0;
+        }
+        .box {
+            width:100px;
+            height:100px;
+            background-color: #000;
+            position: absolute;
+            color: #fff;
+        }
+        .log {
+            width:100px;
+            position: absolute;
+            right: 0;
+            color: #fff;
+            background-color: #000;
+        }
+    </style>
+</head>
+<body>
+    <input  id ="btn0" type="button" value="变宽到500px">
+    <input  id ="btn1" type="button" value="移动到500px">
+    <input id="btn2" type="button" value="移动到1000px">
+    <input id="btn3" type="button" value="变高到1000px">
+
+    <div id="box" class="box"></div>
+    <!--<div id="log" class="log"></div>-->
+</body>
+</html>
+<script>
+    var btn0 = document.getElementById('btn0');
+    var btn1 = document.getElementById('btn1');
+    var btn2 = document.getElementById('btn2');
+    var btn3 = document.getElementById('btn3');
+    var box = document.getElementById('box');
+    /* speed 缓冲运动的加速度*/
+    var speed = 20;
+
+    btn0.onclick = function(){
+        animate("width",box,500,speed);
+    }
+    btn1.onclick = function(){
+        animate("left",box,500,speed);
+
+    }
+    btn2.onclick = function(){
+        animate("left",box,1000,speed);
+    }
+    btn3.onclick = function(){
+        animate("height",box,1000,speed);
+    }
+    /**
+     * animate()函数
+     *@element 操控对象
+     *@target 要位移的距离
+     *@speed 加速度
+     *
+    * */
+    function animate( property,element, target,speed ){
+        /*初始化定时器*/
+        clearInterval(element.claerTime);
+        /*创建定时器*/
+        element.claerTime = setInterval(function(){
+            /* 获得操控对象的当前位置*/
+            var myproperty = parseInt(window.getComputedStyle(element,null)[property]);
+            /* 确定速度正负 */
+            if(myproperty<target){
+                myproperty +=Math.ceil((target-myproperty)/speed);
+            }else{
+                myproperty -=Math.ceil((myproperty-target)/speed);
+            }
+            /* 当操控对象到指定位置时;关闭定时器 */
+            if( myproperty==target ){
+                clearInterval(element.claerTime);
+            }
+            element.innerHTML = myproperty;
+            element.style[property] = myproperty+"px";
+//            log.innerHTML += Math.ceil((atLeft-target)/speed)+"<br>";
+
+
+        },20)
+
+
+        
+    }
+</script>
